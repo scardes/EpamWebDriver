@@ -11,6 +11,7 @@ namespace SeleniumCsharp
 {
     public class Tests
     {
+        
         IWebDriver driver;
 
         [OneTimeSetUp]
@@ -21,11 +22,12 @@ namespace SeleniumCsharp
             string path = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
             
             //Creates the ChomeDriver object, Executes tests on Google Chrome
-            driver = new ChromeDriver(path + @"\drivers\");
+            //driver = new ChromeDriver(path + @"\drivers\");
 
-            //If you want to Execute Tests on Firefox uncomment the below code
+            //If you want to Execute Tests on Firefox uncomment the below code
+
             // Specify Correct location of geckodriver.exe folder path. Ex: C:/Project/drivers
-            //driver= new FirefoxDriver(path + @"\drivers\");
+            driver= new FirefoxDriver(path + @"D:\Scardes\source\repos\EpamWebDriver\EpamWebDriver\drivers\");
         }
 
         [Test]
@@ -55,5 +57,6 @@ namespace SeleniumCsharp
         {
             driver.Quit();
         }
+        
     }
 }
