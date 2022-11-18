@@ -6,8 +6,9 @@ using System;
 using System.Collections.ObjectModel;
 using System.IO;
 
-
-// Example usage for MailSlurp email API plugin
+/// <summary>
+/// Selenium for mail on https://account.mail.ru/
+/// </summary>
 namespace ExampleService.Tests
 {
     [TestFixture]
@@ -30,7 +31,7 @@ namespace ExampleService.Tests
             [Test, Order(1)]
             public void LoadMailInBrowser_ClickSignUp_LoadSuccess()
             {
-                // open the dummy authentication app and assert it is loaded
+                // open the mail url
                 driver.Navigate().GoToUrl("https://account.mail.ru/");
 
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
@@ -76,7 +77,33 @@ namespace ExampleService.Tests
                 //And catch error of authorization
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
                 Assert.IsTrue(driver.FindElement(By.CssSelector("[data-test-id=password-input-error]")).Displayed);
+            }
 
+            [Test, Order(4)]
+            public void Authorization_WithCorrectEmailPassword_AuthorizationSuccess()
+            {
+                // open the mail url again for corrent data
+                driver.Navigate().GoToUrl("https://account.mail.ru/");
+
+                // inbox has a empty email address
+                var username = "epamtestmail93@mail.ru";
+                var emailPassword = "EpamTest185";
+
+
+                // next fill out the sign-up form with email address and a password
+                driver.FindElement(By.Name("username")).SendKeys(username);
+
+                // Go to on page with password
+                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                driver.FindElement(By.CssSelector("[data-test-id=next-button]")).Click();
+
+                //enter wrong password and try to enter
+                driver.FindElement(By.Name("password")).SendKeys(emailPassword);
+                driver.FindElement(By.CssSelector("[data-test-id=submit-button]")).Click();
+
+                //And success of authorization
+                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                Assert.AreEqual("Авторизация", driver.Title);
             }
 
             // runs once after all tests finished
