@@ -11,9 +11,8 @@ using OpenQA.Selenium.Support.UI;
 // Example usage for MailSlurp email API plugin
 namespace ExampleService.Tests
 {
-       
     [TestFixture]
-    public class ExampleTest
+    public class FirstEmailAuthorization
     {
         private static IWebDriver _webdriver;
         private static Configuration _mailslurpConfig;
@@ -21,7 +20,6 @@ namespace ExampleService.Tests
         // get a MailSlurp API Key free at https://app.mailslurp.com
         private static readonly string YourApiKey = "d78376137b1b7f5fa1de7480c363bb7f31edc47415306a77b5f763b5775f8f70";
         private static readonly long TimeoutMillis = 30_000L;
-        private static InboxDto _inbox;
 
         public class NunitSetup
         {
@@ -43,7 +41,7 @@ namespace ExampleService.Tests
 
 
             [Test, Order(1)]
-            public void LoadMailInBrowser_ClickSignUp()
+            public void LoadMailInBrowser_ClickSignUp_LoadSuccess()
             {
                 // open the dummy authentication app and assert it is loaded
                 _webdriver.Navigate().GoToUrl("https://playground.mailslurp.com/");
@@ -56,7 +54,7 @@ namespace ExampleService.Tests
             [Test, Order(2)]
             public void Authorization_WithEmptyEmailPassword_AuthenticatorError()
             {
-                // inbox has a real email address
+                // inbox has a empty email address
                 var emailAddress = "";
                 var emailPassword = "";
 
@@ -74,7 +72,7 @@ namespace ExampleService.Tests
             [Test, Order(3)]
             public void Authorization_WithWrongEmailPassword_AuthenticatorError()
             {
-                // inbox has a real email address
+                // inbox has a fake email address
                 var emailAddress = "132@mail.com";
                 var emailPassword = "123456";
 
@@ -94,7 +92,7 @@ namespace ExampleService.Tests
             {
                 // inbox has a real email address
                 var emailAddress = "ac58d572-8f4f-4ca8-817e-b3bfb1e9f2e8@mailslurp.com";
-                var emailPassword = "test-password";
+                var emailPassword = "Test-password-793";
 
                 // next fill out the sign-up form with email address and a password
                 _webdriver.FindElement(By.Name("email")).SendKeys(emailAddress);
@@ -102,7 +100,6 @@ namespace ExampleService.Tests
 
                 // submit form
                 _webdriver.FindElement(By.CssSelector("[data-test=sign-up-create-account-button]")).Click();
-
                 _webdriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
 
                 // verify that user can see authenticated content
