@@ -11,52 +11,52 @@ namespace SeleniumCsharp
 {
     public class Tests
     {
-        
-        //IWebDriver driver;
 
-        //[OneTimeSetUp]
-        //public void Setup()
-        //{
-        //    //Below code is to get the drivers folder path dynamically.
-        //    //You can also specify chromedriver.exe path dircly ex: C:/MyProject/Project/drivers
-        //    string path = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
-            
-        //    //Creates the ChomeDriver object, Executes tests on Google Chrome
-        //    //driver = new ChromeDriver(path + @"\drivers\");
+        IWebDriver driver;
 
-        //    //If you want to Execute Tests on Firefox uncomment the below code
+        [OneTimeSetUp]
+        public void Setup()
+        {
+            //Below code is to get the drivers folder path dynamically.
+            //You can also specify chromedriver.exe path dircly ex: C:/MyProject/Project/drivers
+            string path = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName;
 
-        //    // Specify Correct location of geckodriver.exe folder path. Ex: C:/Project/drivers
-        //    driver= new FirefoxDriver(path + @"D:\Scardes\source\repos\EpamWebDriver\EpamWebDriver\drivers\");
-        //}
+            //Creates the ChomeDriver object, Executes tests on Google Chrome
+            //driver = new ChromeDriver(path + @"\drivers\");
 
-        //[Test]
-        //public void verifyLogo()
-        //{
-        //    driver.Navigate().GoToUrl("https://www.browserstack.com/");
-        //    Assert.IsTrue(driver.FindElement(By.Id("logo")).Displayed);
-        //}
+            //If you want to Execute Tests on Firefox uncomment the below code
 
-        //[Test]
-        //public void verifyMenuItemcount()
-        //{
-        //    ReadOnlyCollection<IWebElement> menuItem = driver.FindElements(By.XPath("//ul[contains(@class,'horizontal-list product-menu')]/li"));
-        //    Assert.AreEqual(menuItem.Count, 4);
-        //}
+            // Specify Correct location of geckodriver.exe folder path. Ex: C:/Project/drivers
+            driver = new FirefoxDriver(path + @"D:\Scardes\source\repos\EpamWebDriver\EpamWebDriver\drivers\");
+        }
 
-        //[Test]
-        //public void verifyPricingPage()
-        //{
-        //    driver.Navigate().GoToUrl("https://browserstack.com/pricing");
-        //    IWebElement contactUsPageHeader = driver.FindElement(By.TagName("h1"));
-        //    Assert.IsTrue(contactUsPageHeader.Text.Contains("Real device cloud of 20,000 + real iOS & Android devices, instantly accessible"));
-        //}
+        [Test]
+        public void verifyLogo()
+        {
+            driver.Navigate().GoToUrl("https://www.browserstack.com/");
+            Assert.IsTrue(driver.FindElement(By.Id("logo")).Displayed);
+        }
 
-        //[OneTimeTearDown]
-        //public void TearDown()
-        //{
-        //    driver.Quit();
-        //}
-        
+        [Test]
+        public void verifyMenuItemcount()
+        {
+            ReadOnlyCollection<IWebElement> menuItem = driver.FindElements(By.XPath("//ul[contains(@class,'horizontal-list product-menu')]/li"));
+            Assert.AreEqual(menuItem.Count, 4);
+        }
+
+        [Test]
+        public void verifyPricingPage()
+        {
+            driver.Navigate().GoToUrl("https://browserstack.com/pricing");
+            IWebElement contactUsPageHeader = driver.FindElement(By.TagName("h1"));
+            Assert.IsTrue(contactUsPageHeader.Text.Contains("Real device cloud of 20,000 + real iOS & Android devices, instantly accessible"));
+        }
+
+        [OneTimeTearDown]
+        public void TearDown()
+        {
+            driver.Quit();
+        }
+
     }
 }

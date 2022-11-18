@@ -66,13 +66,51 @@ namespace ExampleService.Tests
 
                 // submit form
                 _webdriver.FindElement(By.CssSelector("[data-test=sign-up-create-account-button]")).Click();
-
+                
+                _webdriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
                 _webdriver.FindElement(By.CssSelector("[data-test=authenticator-error]"));
             }
 
+            [Test, Order(3)]
+            public void Authorization_WithWrongEmailPassword_AuthenticatorError()
+            {
+                // inbox has a real email address
+                var emailAddress = "132@mail.com";
+                var emailPassword = "123456";
 
-           // runs once after all tests finished
-           [OneTimeTearDown]
+                // next fill out the sign-up form with email address and a password
+                _webdriver.FindElement(By.Name("email")).SendKeys(emailAddress);
+                _webdriver.FindElement(By.Name("password")).SendKeys(emailPassword);
+
+                // submit form
+                _webdriver.FindElement(By.CssSelector("[data-test=sign-up-create-account-button]")).Click();
+
+                _webdriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                _webdriver.FindElement(By.CssSelector("[data-test=authenticator-error]"));
+            }
+
+            [Test, Order(4)]
+            public void Authorization_WithCorrectEmailPassword_AuthenticatorSuccess()
+            {
+                // inbox has a real email address
+                var emailAddress = "ac58d572-8f4f-4ca8-817e-b3bfb1e9f2e8@mailslurp.com";
+                var emailPassword = "test-password";
+
+                // next fill out the sign-up form with email address and a password
+                _webdriver.FindElement(By.Name("email")).SendKeys(emailAddress);
+                _webdriver.FindElement(By.Name("password")).SendKeys(emailPassword);
+
+                // submit form
+                _webdriver.FindElement(By.CssSelector("[data-test=sign-up-create-account-button]")).Click();
+
+                _webdriver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+
+                // verify that user can see authenticated content
+                Assert.IsTrue(_webdriver.FindElement(By.TagName("h1")).Text.Contains("Welcome"));
+            }
+
+            // runs once after all tests finished
+            [OneTimeTearDown]
             public void Dispose()
             {
                 // close down the browser
