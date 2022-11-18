@@ -70,7 +70,7 @@ namespace ExampleService.Tests
             }
 
             [Test, Order(3)]
-            public void Authorization_WithWrongEmailPassword_AuthenticatorError()
+            public void Authorization_WithWrongEmailPassword_AuthorizationError()
             {
                 // inbox has a fake email address
                 var emailAddress = "132@mail.com";
@@ -88,7 +88,7 @@ namespace ExampleService.Tests
             }
 
             [Test, Order(4)]
-            public void Authorization_WithCorrectEmailPassword_AuthenticatorSuccess()
+            public void Authorization_WithCorrectEmailPassword_AuthorizationSuccess()
             {
                 // inbox has a real email address
                 var emailAddress = "ac58d572-8f4f-4ca8-817e-b3bfb1e9f2e8@mailslurp.com";
