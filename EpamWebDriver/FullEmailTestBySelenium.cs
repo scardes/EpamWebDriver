@@ -24,6 +24,18 @@ namespace ExampleService.Tests
             string username = "epamtestmail93@mail.ru";
             string emailPassword = "EpamTest185";
 
+            //Page objects For MailRUAutorization() and [Test, Order(2)]; [Test, Order(3)]
+            By NextButton = By.CssSelector("[data-test-id=next-button]");
+            By SubmitButton = By.CssSelector("[data-test-id=submit-button]");
+            By PopUpEmptyError = By.CssSelector("[data-test-id=required]");
+            By PopUpInputError = By.CssSelector("[data-test-id=password-input-error]");
+
+            //Page objects For send email from mail.ru [Test, Order(5)]
+            By WriteLetterButton = By.XPath("//span[@class='compose-button__txt']");
+            By LetterReciverField = By.XPath("//input[@class='container--H9L5q size_s--3_M-_']");
+            By LetterThemeField = By.XPath("//input[@name='Subject']");
+            By LetterContendField = By.XPath("//div[@role='textbox']/div");
+            By SendButton = By.CssSelector("[data-test-id=send]");
 
             [OneTimeSetUp]
             public void Setup()
@@ -35,27 +47,29 @@ namespace ExampleService.Tests
                 driver = new ChromeDriver(path + @"\drivers\");
             }
 
+            //Open mail.ru page
             public void GotoMailRU()
             {
                 driver.Navigate().GoToUrl(MailRuUrl);
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             }
 
+            // Make full autorization on mail.ru
             public void MailRUAutorization()
             {
                 // Open mail.ru page
                 GotoMailRU();
                 
-                // next fill out the sign-up form with email address and a password
+                // Next fill out the sign-up form with email address and a password
                 driver.FindElement(By.Name("username")).SendKeys(username);
 
                 // Go to on page with password
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                driver.FindElement(By.CssSelector("[data-test-id=next-button]")).Click();
+                driver.FindElement(NextButton).Click();
 
                 //enter wrong password and try to enter
                 driver.FindElement(By.Name("password")).SendKeys(emailPassword);
-                driver.FindElement(By.CssSelector("[data-test-id=submit-button]")).Click();
+                driver.FindElement(SubmitButton).Click();
             }
 
             [Test, Order(1)]
@@ -79,11 +93,11 @@ namespace ExampleService.Tests
 
                 // try to go in page with password
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                driver.FindElement(By.CssSelector("[data-test-id=next-button]")).Click();
+                driver.FindElement(NextButton).Click();
 
                 //Take a error of empty username/email address
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                Assert.IsTrue(driver.FindElement(By.CssSelector("[data-test-id=required]")).Displayed);
+                Assert.IsTrue(driver.FindElement(PopUpEmptyError).Displayed);
             }
 
             [Test, Order(3)]
@@ -97,15 +111,15 @@ namespace ExampleService.Tests
 
                 // Go to on page with password
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                driver.FindElement(By.CssSelector("[data-test-id=next-button]")).Click();
+                driver.FindElement(NextButton).Click();
 
                 //enter wrong password and try to enter
                 driver.FindElement(By.Name("password")).SendKeys("123");
-                driver.FindElement(By.CssSelector("[data-test-id=submit-button]")).Click();
+                driver.FindElement(SubmitButton).Click();
 
                 //And catch error of authorization
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                Assert.IsTrue(driver.FindElement(By.CssSelector("[data-test-id=password-input-error]")).Displayed);
+                Assert.IsTrue(driver.FindElement(PopUpInputError).Displayed);
             }
 
             [Test, Order(4)]
@@ -115,7 +129,6 @@ namespace ExampleService.Tests
                 MailRUAutorization();
 
                 //And success of authorization
-                
                 Assert.AreEqual("Авторизация", driver.Title);
             }
 
@@ -124,22 +137,15 @@ namespace ExampleService.Tests
             {
                 // Make full autorization on mail.ru
                 MailRUAutorization();
-
-                //Page objects
-                By WriteLetterButton = By.XPath("//*[@id='app-canvas']/div/div[1]/div[1]/div/div[2]/span/div[1]/div[1]/div/div/div/div[1]/div/div/a");
-                By LetterReciverField = By.XPath("/html/body/div[1]/div/div[2]/div/div/div/div[2]/div[3]/div[2]/div/div/div[1]/div/div[2]/div/div/label/div/div/input");
-                By LetterThemeField = By.XPath("/html/body/div[1]/div/div[2]/div/div/div/div[2]/div[3]/div[3]/div[1]/div[2]/div/input");
-                By LetterContendField = By.XPath("/html/body/div[1]/div/div[2]/div/div/div/div[2]/div[3]/div[5]/div/div/div[2]/div[1]");
-                By SendButton = By.CssSelector("[data-test-id=send]"); 
-
+                                
                 // Go to the page with sending email
                 driver.Manage().Window.Maximize();
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
                 driver.FindElement(WriteLetterButton).Click();
 
                 //Fill a letter content and send email
-                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                driver.FindElement(LetterReciverField).SendKeys("ac58d572-8f4f-4ca8-817e-b3bfb1e9f2e8@mailslurp.com");
+                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
+                driver.FindElement(LetterReciverField).SendKeys("testepammail@yandex.ru");
                 driver.FindElement(LetterThemeField).SendKeys("Test Letter From mail.ru");
                 //Fill content of letter
                 driver.FindElement(LetterContendField).SendKeys("Content of test letter");
@@ -149,8 +155,8 @@ namespace ExampleService.Tests
 
 
 
-
             // runs once after all tests finished
+
             [OneTimeTearDown]
             public void Dispose()
             {
