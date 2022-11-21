@@ -7,7 +7,9 @@ using System.Collections.ObjectModel;
 using System.IO;
 
 /// <summary>
-/// Selenium for mail on https://account.mail.ru/
+/// Selenium test project with two emails 
+/// first email on https://account.mail.ru/
+/// second email on 
 /// </summary>
 namespace ExampleService.Tests
 {
@@ -28,14 +30,40 @@ namespace ExampleService.Tests
                 driver = new ChromeDriver(path + @"\drivers\");
             }
 
+
+            public void GotoMailRU()
+            {
+                driver.Navigate().GoToUrl("https://account.mail.ru/");
+                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+            }
+
+            public void MailRUAutorization()
+            {
+                GotoMailRU();
+
+                // inbox has a empty email address
+                var username = "epamtestmail93@mail.ru";
+                var emailPassword = "EpamTest185";
+
+                // next fill out the sign-up form with email address and a password
+                driver.FindElement(By.Name("username")).SendKeys(username);
+
+                // Go to on page with password
+                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                driver.FindElement(By.CssSelector("[data-test-id=next-button]")).Click();
+
+                //enter wrong password and try to enter
+                driver.FindElement(By.Name("password")).SendKeys(emailPassword);
+                driver.FindElement(By.CssSelector("[data-test-id=submit-button]")).Click();
+            }
+
             [Test, Order(1)]
             public void LoadMailInBrowser_ClickSignUp_LoadSuccess()
             {
                 // open the mail url
-                driver.Navigate().GoToUrl("https://account.mail.ru/");
-                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                GotoMailRU();
 
-                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                //Check window is loaded
                 Assert.IsTrue(driver.FindElement(By.Id("login-content")).Displayed);
             }
 
@@ -43,8 +71,7 @@ namespace ExampleService.Tests
             public void Authorization_WithEmptyEmailPassword_AuthorizationError()
             {
                 // open the mail url again for empty data
-                driver.Navigate().GoToUrl("https://account.mail.ru/");
-                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                GotoMailRU();
 
                 // inbox has a empty username/email address
                 var username = "";
@@ -65,22 +92,17 @@ namespace ExampleService.Tests
             public void Authorization_WithErrorEmailPassword_AuthorizationError()
             {
                 // open the mail url again for incorrent data
-                driver.Navigate().GoToUrl("https://account.mail.ru/");
-                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-
-                // inbox has a empty email address
-                var username = "123";
-                var emailPassword = "123";
+                GotoMailRU();
 
                 // next fill out the sign-up form with email address and a password
-                driver.FindElement(By.Name("username")).SendKeys(username);
+                driver.FindElement(By.Name("username")).SendKeys("123");
 
                 // Go to on page with password
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
                 driver.FindElement(By.CssSelector("[data-test-id=next-button]")).Click();
 
                 //enter wrong password and try to enter
-                driver.FindElement(By.Name("password")).SendKeys(emailPassword);
+                driver.FindElement(By.Name("password")).SendKeys("123");
                 driver.FindElement(By.CssSelector("[data-test-id=submit-button]")).Click();
 
                 //And catch error of authorization
@@ -91,52 +113,17 @@ namespace ExampleService.Tests
             [Test, Order(4)]
             public void Authorization_WithCorrectEmailPassword_AuthorizationSuccess()
             {
-                // open the mail url again for corrent data
-                driver.Navigate().GoToUrl("https://account.mail.ru/");
-                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-
-                // inbox has a empty email address
-                var username = "epamtestmail93@mail.ru";
-                var emailPassword = "EpamTest185";
-
-
-                // next fill out the sign-up form with email address and a password
-                driver.FindElement(By.Name("username")).SendKeys(username);
-
-                // Go to on page with password
-                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                driver.FindElement(By.CssSelector("[data-test-id=next-button]")).Click();
-
-                //enter wrong password and try to enter
-                driver.FindElement(By.Name("password")).SendKeys(emailPassword);
-                driver.FindElement(By.CssSelector("[data-test-id=submit-button]")).Click();
+                MailRUAutorization();
 
                 //And success of authorization
-                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
+                
                 Assert.AreEqual("Авторизация", driver.Title);
             }
 
             [Test, Order(5)]
             public void SendEmail_WithSomeInformation_SendSuccess()
             {
-                // open the mail url again for corrent data
-                driver.Navigate().GoToUrl("https://account.mail.ru/");
-                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-
-                // inbox has a empty email address
-                var username = "epamtestmail93@mail.ru";
-                var emailPassword = "EpamTest185";
-
-                // next fill out the sign-up form with email address and a password
-                driver.FindElement(By.Name("username")).SendKeys(username);
-
-                // Go to on page with password
-                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                driver.FindElement(By.CssSelector("[data-test-id=next-button]")).Click();
-
-                //enter wrong password and try to enter
-                driver.FindElement(By.Name("password")).SendKeys(emailPassword);
-                driver.FindElement(By.CssSelector("[data-test-id=submit-button]")).Click();
+                MailRUAutorization();
 
                 // Go to the page with sending email
                 driver.Manage().Window.Maximize();

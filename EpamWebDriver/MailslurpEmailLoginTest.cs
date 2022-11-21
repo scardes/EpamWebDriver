@@ -39,7 +39,6 @@ namespace ExampleService.Tests
                 _mailslurpConfig.ApiKey.Add("x-api-key", YourApiKey);
             }
 
-
             [Test, Order(1)]
             public void LoadMailInBrowser_ClickSignUp_LoadSuccess()
             {
