@@ -20,6 +20,11 @@ namespace ExampleService.Tests
         {
             IWebDriver driver;
 
+            string MailRuUrl = "https://account.mail.ru/";
+            string username = "epamtestmail93@mail.ru";
+            string emailPassword = "EpamTest185";
+
+
             [OneTimeSetUp]
             public void Setup()
             {
@@ -30,21 +35,17 @@ namespace ExampleService.Tests
                 driver = new ChromeDriver(path + @"\drivers\");
             }
 
-
             public void GotoMailRU()
             {
-                driver.Navigate().GoToUrl("https://account.mail.ru/");
+                driver.Navigate().GoToUrl(MailRuUrl);
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
             }
 
             public void MailRUAutorization()
             {
+                // Open mail.ru page
                 GotoMailRU();
-
-                // inbox has a empty email address
-                var username = "epamtestmail93@mail.ru";
-                var emailPassword = "EpamTest185";
-
+                
                 // next fill out the sign-up form with email address and a password
                 driver.FindElement(By.Name("username")).SendKeys(username);
 
@@ -60,7 +61,7 @@ namespace ExampleService.Tests
             [Test, Order(1)]
             public void LoadMailInBrowser_ClickSignUp_LoadSuccess()
             {
-                // open the mail url
+                // Open mail.ru page
                 GotoMailRU();
 
                 //Check window is loaded
@@ -70,14 +71,11 @@ namespace ExampleService.Tests
             [Test, Order(2)]
             public void Authorization_WithEmptyEmailPassword_AuthorizationError()
             {
-                // open the mail url again for empty data
+                // Open mail.ru page again for empty data
                 GotoMailRU();
 
-                // inbox has a empty username/email address
-                var username = "";
-
                 // next fill out the sign-up form with email address and try to go in page with password
-                driver.FindElement(By.Name("username")).SendKeys(username);
+                driver.FindElement(By.Name("username")).SendKeys("");
 
                 // try to go in page with password
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
@@ -91,7 +89,7 @@ namespace ExampleService.Tests
             [Test, Order(3)]
             public void Authorization_WithErrorEmailPassword_AuthorizationError()
             {
-                // open the mail url again for incorrent data
+                //  Open mail.ru page again for incorrent data
                 GotoMailRU();
 
                 // next fill out the sign-up form with email address and a password
@@ -113,6 +111,7 @@ namespace ExampleService.Tests
             [Test, Order(4)]
             public void Authorization_WithCorrectEmailPassword_AuthorizationSuccess()
             {
+                // Make full autorization on mail.ru
                 MailRUAutorization();
 
                 //And success of authorization
@@ -123,26 +122,29 @@ namespace ExampleService.Tests
             [Test, Order(5)]
             public void SendEmail_WithSomeInformation_SendSuccess()
             {
+                // Make full autorization on mail.ru
                 MailRUAutorization();
+
+                //Page objects
+                By WriteLetterButton = By.XPath("//*[@id='app-canvas']/div/div[1]/div[1]/div/div[2]/span/div[1]/div[1]/div/div/div/div[1]/div/div/a");
+                By LetterReciverField = By.XPath("/html/body/div[1]/div/div[2]/div/div/div/div[2]/div[3]/div[2]/div/div/div[1]/div/div[2]/div/div/label/div/div/input");
+                By LetterThemeField = By.XPath("/html/body/div[1]/div/div[2]/div/div/div/div[2]/div[3]/div[3]/div[1]/div[2]/div/input");
+                By LetterContendField = By.XPath("/html/body/div[1]/div/div[2]/div/div/div/div[2]/div[3]/div[5]/div/div/div[2]/div[1]");
+                By SendButton = By.CssSelector("[data-test-id=send]"); 
 
                 // Go to the page with sending email
                 driver.Manage().Window.Maximize();
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                driver.FindElement(By.XPath("//*[@id='app-canvas']/div/div[1]/div[1]/div/div[2]/span/div[1]/div[1]/div/div/div/div[1]/div/div/a")).Click();
+                driver.FindElement(WriteLetterButton).Click();
 
-                //Fill info one to receive a letter
+                //Fill a letter content and send email
                 driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div/div/div[2]/div[3]/div[2]/div/div/div[1]/div/div[2]/div/div/label/div/div/input"))
-                    .SendKeys("ac58d572-8f4f-4ca8-817e-b3bfb1e9f2e8@mailslurp.com");
-                //Fill the theme of letter
-                driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div/div/div[2]/div[3]/div[3]/div[1]/div[2]/div/input"))
-                    .SendKeys("Test Letter From mail.ru");
+                driver.FindElement(LetterReciverField).SendKeys("ac58d572-8f4f-4ca8-817e-b3bfb1e9f2e8@mailslurp.com");
+                driver.FindElement(LetterThemeField).SendKeys("Test Letter From mail.ru");
                 //Fill content of letter
-                driver.FindElement(By.XPath("/html/body/div[1]/div/div[2]/div/div/div/div[2]/div[3]/div[5]/div/div/div[2]/div[1]"))
-                    .SendKeys("Content of test letter");
+                driver.FindElement(LetterContendField).SendKeys("Content of test letter");
                 //And send letter
-                driver.FindElement(By.CssSelector("[data-test-id=send]")).Click();
-                //By.XPath("/html/body/div[1]/div/div[2]/div/div/div/div[3]/div[1]/div[1]/div/button/span")
+                driver.FindElement(SendButton).Click();
             }
 
 
