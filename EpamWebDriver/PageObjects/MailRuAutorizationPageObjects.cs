@@ -1,4 +1,6 @@
-﻿using OpenQA.Selenium;
+﻿using NUnit.Framework;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -16,7 +18,6 @@ namespace EpamWebDriver.PageObjects
         private readonly By SubmitButton = By.CssSelector("[data-test-id=submit-button]");
         private readonly By UsernameField = By.Name("username");
         private readonly By PasswordField = By.Name("password");
-
         private readonly By PopUpEmptyError = By.CssSelector("[data-test-id=required]");
         private readonly By PopUpInputError = By.CssSelector("[data-test-id=password-input-error]");
 
@@ -24,6 +25,7 @@ namespace EpamWebDriver.PageObjects
         {
             this.driver = driver;
         }
+
 
         //Open mail.ru page
         private void GotoMailRU()
@@ -47,8 +49,7 @@ namespace EpamWebDriver.PageObjects
             driver.FindElement(UsernameField).SendKeys(username);
 
             // Go to the nest step
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-            driver.FindElement(NextButton).Click();
+            driver.FindElement(NextButton, 10).Click();
         }
 
         // Make full autorization on mail.ru
@@ -59,13 +60,23 @@ namespace EpamWebDriver.PageObjects
             driver.FindElement(NextButton).Click();
             driver.FindElement(UsernameField).SendKeys(username);
 
-            // Go to the nest step
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-            driver.FindElement(NextButton).Click();
+            // Go to the next step
+            driver.FindElement(NextButton, 10).Click();
 
             //Now fill the password
             driver.FindElement(PasswordField).SendKeys(password);
             driver.FindElement(SubmitButton).Click();
         }
+
+        public void AssertPopUpEmptyError()
+        {
+            Assert.IsTrue(driver.FindElement(PopUpEmptyError, 30).Displayed);
+        }
+
+        public void AssertPopUpInputError()
+        {
+            Assert.IsTrue(driver.FindElement(PopUpInputError, 30).Displayed);
+        }
+
     }
 }

@@ -21,22 +21,14 @@ namespace ExampleService.Tests
         {
             IWebDriver driver;
 
-
-            // Mail.ru Autorization data
-            
-
-            //Page objects For MailRUAutorization() and [Test, Order(2)]; [Test, Order(3)]
-            //private readonly By NextButton = By.CssSelector("[data-test-id=next-button]");
-            //private readonly By SubmitButton = By.CssSelector("[data-test-id=submit-button]");
-            private readonly By PopUpEmptyError = By.CssSelector("[data-test-id=required]");
-            private readonly By PopUpInputError = By.CssSelector("[data-test-id=password-input-error]");
-
             //Page objects For send email from mail.ru [Test, Order(5)]
             private readonly By WriteLetterButton = By.XPath("//span[@class='compose-button__txt']");
             private readonly By LetterReciverField = By.XPath("//input[@class='container--H9L5q size_s--3_M-_']");
             private readonly By LetterThemeField = By.XPath("//input[@name='Subject']");
             private readonly By LetterContendField = By.XPath("//div[@role='textbox']/div");
             private readonly By SendButton = By.CssSelector("[data-test-id=send]");
+
+        
 
             [OneTimeSetUp]
             public void Setup()
@@ -48,29 +40,26 @@ namespace ExampleService.Tests
                 driver = new ChromeDriver(path + @"\drivers\");
             }
 
-            
             [Test, Order(1)]
             public void LoadMailInBrowser_ClickSignUp_LoadSuccess()
             {
+                // Open mail.ru page
                 var autorizationMailru = new MailRuAutorizationPageObjects(driver);
                 autorizationMailru.AutorizationInMailRU();
-                // Open mail.ru page
 
                 //Check window is loaded
-                Assert.IsTrue(driver.FindElement(By.Id("login-content")).Displayed);
+                Assert.AreEqual("Account Mail.Ru", driver.Title);
             }
 
             [Test, Order(2)]
             public void Authorization_WithEmptyEmailPassword_AuthorizationError()
             {
+                // Open mail.ru page again with empty login data
                 var autorizationMailru = new MailRuAutorizationPageObjects(driver);
-                
-                // Open mail.ru page again for empty data
                 autorizationMailru.AutorizationInMailRU("");
 
                 //Take a error of empty username/email address
-                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                Assert.IsTrue(driver.FindElement(PopUpEmptyError).Displayed);
+                autorizationMailru.AssertPopUpEmptyError();
             }
 
             [Test, Order(3)]
@@ -81,8 +70,7 @@ namespace ExampleService.Tests
                 autorizationMailru.AutorizationInMailRU("123", "123");
 
                 //And catch error of authorization
-                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                Assert.IsTrue(driver.FindElement(PopUpInputError).Displayed);
+                autorizationMailru.AssertPopUpInputError();
             }
 
             [Test, Order(4)]
@@ -90,11 +78,9 @@ namespace ExampleService.Tests
             {
                 // Make full autorization on mail.ru
                 var autorizationMailru = new MailRuAutorizationPageObjects(driver);
-                
                 autorizationMailru.AutorizationInMailRU("epamtestmail93@mail.ru", "EpamTest185");
 
                 //And success of authorization
-                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(30);
                 Assert.AreEqual("Авторизация", driver.Title);
             }
 
@@ -103,7 +89,6 @@ namespace ExampleService.Tests
             {
                 // Make full autorization on mail.ru
                 var autorizationMailru = new MailRuAutorizationPageObjects(driver);
-
                 autorizationMailru.AutorizationInMailRU("epamtestmail93@mail.ru", "EpamTest185");
 
                 // Go to the page with sending email
@@ -122,16 +107,15 @@ namespace ExampleService.Tests
             }
 
 
-
             // runs once after all tests finished
 
-            //[OneTimeTearDown]
-            //public void Dispose()
-            //{
-            //    // close down the browser
-            //    driver.Quit();
-            //    driver.Dispose();
-            //}
+            [OneTimeTearDown]
+            public void Dispose()
+            {
+                // close down the browser
+                driver.Quit();
+                driver.Dispose();
+            }
         }
     }
 }
