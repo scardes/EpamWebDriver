@@ -8,12 +8,11 @@ using System.IO;
 /// <summary>
 /// Selenium test project with two emails 
 /// first email on https://account.mail.ru/
-/// second email on 
 /// </summary>
 namespace ExampleService.Tests
 {
     [TestFixture]
-    public class FullEmailTestBySelenium
+    public class MailRu_AutorizationAndSendMail
     {
         public class NunitSetup
         {
@@ -90,8 +89,8 @@ namespace ExampleService.Tests
             public void Dispose()
             {
                 // close down the browser
-                //driver.Quit();
-                //driver.Dispose();
+                driver.Quit();
+                driver.Dispose();
             }
         }
     }
