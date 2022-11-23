@@ -2,9 +2,7 @@
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Firefox;
 using System;
-using System.Collections.ObjectModel;
 using System.IO;
 
 /// <summary>
@@ -20,15 +18,6 @@ namespace ExampleService.Tests
         public class NunitSetup
         {
             IWebDriver driver;
-
-            //Page objects For send email from mail.ru [Test, Order(5)]
-            private readonly By WriteLetterButton = By.XPath("//span[@class='compose-button__txt']");
-            private readonly By LetterReciverField = By.XPath("//input[@class='container--H9L5q size_s--3_M-_']");
-            private readonly By LetterThemeField = By.XPath("//input[@name='Subject']");
-            private readonly By LetterContendField = By.XPath("//div[@role='textbox']/div");
-            private readonly By SendButton = By.CssSelector("[data-test-id=send]");
-
-        
 
             [OneTimeSetUp]
             public void Setup()
@@ -91,30 +80,18 @@ namespace ExampleService.Tests
                 var autorizationMailru = new MailRuAutorizationPageObjects(driver);
                 autorizationMailru.AutorizationInMailRU("epamtestmail93@mail.ru", "EpamTest185");
 
-                // Go to the page with sending email
-                driver.Manage().Window.Maximize();
-                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-                driver.FindElement(WriteLetterButton).Click();
-
-                //Fill a letter content and send email
-                driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(20);
-                driver.FindElement(LetterReciverField).SendKeys("testepammail@yandex.ru");
-                driver.FindElement(LetterThemeField).SendKeys("Test Letter From mail.ru");
-                //Fill content of letter
-                driver.FindElement(LetterContendField).SendKeys("Content of test letter");
-                //And send letter
-                driver.FindElement(SendButton).Click();
+                //Fill SendEmailFromMailRU with 1.email receiver 2.Theme of letter 3.letter content and then send email
+                MailRuSendMailPageObjects SendMail = new MailRuSendMailPageObjects(driver);
+                SendMail.SendEmailFromMailRU("testepammail@yandex.ru", "Test Letter From mail.ru", "Content of test letter");
             }
 
-
             // runs once after all tests finished
-
             [OneTimeTearDown]
             public void Dispose()
             {
                 // close down the browser
-                driver.Quit();
-                driver.Dispose();
+                //driver.Quit();
+                //driver.Dispose();
             }
         }
     }
