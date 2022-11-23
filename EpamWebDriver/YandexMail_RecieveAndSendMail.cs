@@ -7,7 +7,7 @@ using System.IO;
 
 /// <summary>
 /// Selenium test project with two emails 
-/// send email from https://account.mail.ru/
+/// second email is https://mail.yandex.ru/
 /// </summary>
 namespace ExampleService.Tests
 {
@@ -31,6 +31,7 @@ namespace ExampleService.Tests
             [Test, Order(1)]
             public void Authorization_OnYandexMail_AuthorizationSuccess()
             {
+                //Autorization on Yandex mail
                 YandexAutorizationPageObjects EnterInYandex = new YandexAutorizationPageObjects(driver);
                 EnterInYandex.AutorizationInYandexMail("testepammail@yandex.ru", "EpamTest185");
             }
@@ -38,8 +39,51 @@ namespace ExampleService.Tests
             [Test, Order(2)]
             public void MailStatusCheck_OnYandexMail_NotReadSuccess()
             {
+                //Autorization on Yandex mail
+                YandexAutorizationPageObjects EnterInYandex = new YandexAutorizationPageObjects(driver);
+                EnterInYandex.AutorizationInYandexMail("testepammail@yandex.ru", "EpamTest185");
 
+                //Chech the letter is not read yet and have correct sender
+                YandexMailMainPageObjects YandexMain = new YandexMailMainPageObjects(driver);
+                YandexMain.CheckNewRecieveMail();
             }
+
+            [Test, Order(3)]
+            public void ReadNewMail_AssertContent_CheckSuccess()
+            {
+                //Autorization on Yandex mail
+                YandexAutorizationPageObjects EnterInYandex = new YandexAutorizationPageObjects(driver);
+                EnterInYandex.AutorizationInYandexMail("testepammail@yandex.ru", "EpamTest185");
+
+                //Read the letter and check mail content
+                YandexMailMainPageObjects YandexMain = new YandexMailMainPageObjects(driver);
+                YandexMain.ReadNewMail();
+
+                //Start UnitTest for Assert of Mail content
+                //Arrange
+                string expectedStr = "Content of test letter";
+
+                //Act
+                string readedStr = YandexMain.ReadContentOfNewMail();
+
+                //Assert
+                Assert.AreEqual(expectedStr, readedStr);
+            }
+
+            [Test, Order(4)]
+            public void ResponseToMail_WithNewLogin_SendSuccess()
+            {
+                //Autorization on Yandex mail
+                YandexAutorizationPageObjects EnterInYandex = new YandexAutorizationPageObjects(driver);
+                EnterInYandex.AutorizationInYandexMail("testepammail@yandex.ru", "EpamTest185");
+
+                //Read the letter and check mail content
+                YandexMailMainPageObjects YandexMain = new YandexMailMainPageObjects(driver);
+                YandexMain.ReadNewMail();
+
+                YandexMain.ResponceLetterWithName("EpamTestLogin");
+            }
+
 
 
             // Runs once after all tests finished

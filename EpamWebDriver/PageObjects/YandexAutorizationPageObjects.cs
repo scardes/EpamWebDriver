@@ -17,14 +17,11 @@ namespace EpamWebDriver.PageObjects
         private readonly By SubmitButton = By.XPath("//button[@type='submit']");
         private readonly By PasswordField = By.XPath("//input[@type='password']");
         private readonly By EnterButton = By.XPath("//button[@type='submit']");
-        
-        // private readonly By PasswordField = By.Name("password");
 
         public YandexAutorizationPageObjects(IWebDriver driver)
         {
             this.driver = driver;
         }
-
 
         // Make full autorization on mail.ru
         public void AutorizationInYandexMail(string login, string password)
