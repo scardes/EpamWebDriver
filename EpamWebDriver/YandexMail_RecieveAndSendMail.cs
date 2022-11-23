@@ -31,16 +31,24 @@ namespace ExampleService.Tests
             [Test, Order(1)]
             public void Authorization_OnYandexMail_AuthorizationSuccess()
             {
-               
+                YandexAutorizationPageObjects EnterInYandex = new YandexAutorizationPageObjects(driver);
+                EnterInYandex.AutorizationInYandexMail("testepammail@yandex.ru", "EpamTest185");
             }
+
+            [Test, Order(2)]
+            public void MailStatusCheck_OnYandexMail_NotReadSuccess()
+            {
+
+            }
+
 
             // Runs once after all tests finished
             [OneTimeTearDown]
             public void Dispose()
             {
                 // Close down the browser
-                driver.Quit();
-                driver.Dispose();
+                //driver.Quit();
+                //driver.Dispose();
             }
         }
     }

@@ -1,6 +1,7 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
 using System;
+using System.Threading.Tasks;
 
 namespace EpamWebDriver
 {
@@ -16,6 +17,10 @@ namespace EpamWebDriver
             return driver.FindElement(by);
         }
 
-
+        public static void WaitSomeInterval(int seconds = 10)
+        {
+            Task.Delay(TimeSpan.FromSeconds(seconds)).Wait();
+        }
     }
+
 }

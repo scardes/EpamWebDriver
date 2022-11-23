@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using OpenQA.Selenium;
 using System;
+using System.Threading;
 
 namespace EpamWebDriver.PageObjects
 {
@@ -8,13 +9,16 @@ namespace EpamWebDriver.PageObjects
     {
         private IWebDriver driver;
 
-        string YandexUrl = "https://passport.yandex.ru/";
+        string YandexUrl = "https://mail.yandex.ru/";
 
         //Page objects For MailRUAutorization 
-        private readonly By NextButton = By.CssSelector("[data-test-id=next-button]");
-        private readonly By SubmitButton = By.CssSelector("[data-test-id=submit-button]");
-        private readonly By UsernameField = By.Name("username");
-        private readonly By PasswordField = By.Name("password");
+        private readonly By InputInMailButton = By.XPath("//button[@type='button']");
+        private readonly By LoginField = By.XPath("//input[@name='login']");
+        private readonly By SubmitButton = By.XPath("//button[@type='submit']");
+        private readonly By PasswordField = By.XPath("//input[@type='password']");
+        private readonly By EnterButton = By.XPath("//button[@type='submit']");
+        
+        // private readonly By PasswordField = By.Name("password");
 
         public YandexAutorizationPageObjects(IWebDriver driver)
         {
@@ -22,27 +26,25 @@ namespace EpamWebDriver.PageObjects
         }
 
 
-        //Open mail.ru page
-        private void YandexMail()
+        // Make full autorization on mail.ru
+        public void AutorizationInYandexMail(string login, string password)
         {
+            // Go to Yandex.mail page
+            driver.Manage().Window.Maximize();
             driver.Navigate().GoToUrl(YandexUrl);
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-        }
 
-        // Make full autorization on mail.ru
-        public void AutorizationInYandexMail(string username, string password)
-        {
-            YandexMail();
-            //Fill Username(Login) information
-            driver.FindElement(NextButton).Click();
-            driver.FindElement(UsernameField).SendKeys(username);
+            //
+            driver.FindElement(InputInMailButton, 20).Click();
+            driver.FindElement(LoginField, 10).SendKeys(login);
+            driver.FindElement(SubmitButton, 30).Click();
+
+            //Fill password information
+            WebDriverExtensions.WaitSomeInterval(3);
+            driver.FindElement(PasswordField, 30).SendKeys(password);
 
             // Go to the next step
-            driver.FindElement(NextButton, 10).Click();
-
-            //Now fill the password
-            driver.FindElement(PasswordField).SendKeys(password);
-            driver.FindElement(SubmitButton).Click();
+            driver.FindElement(EnterButton, 10).Click();
         }
     }
 }
