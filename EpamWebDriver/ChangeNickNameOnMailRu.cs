@@ -1,4 +1,5 @@
-﻿using EpamWebDriver.PageObjects;
+﻿using EpamWebDriver;
+using EpamWebDriver.PageObjects;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
@@ -57,11 +58,13 @@ namespace ExampleService.Tests
                 // Make full autorization on mail.ru
                 var autorizationMailru = new MailRuAutorizationPageObjects(driver);
                 autorizationMailru.AutorizationInMailRU("epamtestmail93@mail.ru", "EpamTest185");
+                WebDriverExtensions.WaitSomeInterval(3);
 
                 //Read the letter and take new nick name
                 MailRuSendMailPageObjects EnterSettings = new MailRuSendMailPageObjects(driver);
                 EnterSettings.EnterInSetting();
 
+                //Set new Nick name and save changes
                 MailRuSetPersonalDataPageObjects ChangeNickname = new MailRuSetPersonalDataPageObjects(driver);
                 ChangeNickname.WriteNewNickName(NickNameFromLetter);
                 ChangeNickname.SavePersonData();
@@ -70,12 +73,11 @@ namespace ExampleService.Tests
             [Test, Order(3)]
             public void ChangePersonalData_ChangeNickName_ChangeSuccess()
             {
-                string NickNameFromLetter = "EpamTestLogin";
-
                 // Make full autorization on mail.ru
                 var autorizationMailru = new MailRuAutorizationPageObjects(driver);
                 autorizationMailru.AutorizationInMailRU("epamtestmail93@mail.ru", "EpamTest185");
-
+                WebDriverExtensions.WaitSomeInterval(3);
+                
                 //Read the letter and take new nick name
                 MailRuSendMailPageObjects EnterSettings = new MailRuSendMailPageObjects(driver);
                 EnterSettings.EnterInSetting();
@@ -87,7 +89,7 @@ namespace ExampleService.Tests
                 string expectedStr = "EpamTestLogin";
 
                 //Act
-                string readedStr = ChangeNickname.WriteNewNickName(NickNameFromLetter);
+                string readedStr = ChangeNickname.ReadNewNickName();
 
                 //Assert
                 Assert.AreEqual(expectedStr, readedStr);
@@ -98,8 +100,8 @@ namespace ExampleService.Tests
             public void Dispose()
             {
                 // close down the browser
-                driver.Quit();
-                driver.Dispose();
+                //driver.Quit();
+                //driver.Dispose();
             }
         }
     }

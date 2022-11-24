@@ -17,11 +17,16 @@ namespace EpamWebDriver.PageObjects
             this.driver = driver;
         }
 
-        public string WriteNewNickName(string newNickName)
+        public void WriteNewNickName(string newNickName)
         {
             driver.FindElement(NickNameField).Clear();
             driver.FindElement(NickNameField).SendKeys(newNickName);
-            return newNickName;
+        }
+
+        public string ReadNewNickName()
+        {
+            string reciveContent = driver.FindElement(NickNameField).GetAttribute("value");
+            return reciveContent;
         }
 
         public void SavePersonData()

@@ -9,8 +9,6 @@ namespace EpamWebDriver.PageObjects
     {
         private IWebDriver driver;
 
-        string YandexUrl = "https://mail.yandex.ru/";
-
         //Page objects For MailRUAutorization 
         private readonly By NotReadStatus = By.XPath("//span[@class='mail-Icon mail-Icon-Read js-read toggles-svgicon-on-active is-active']");
         private readonly By TitleOfRecivingMail = By.XPath("//span[@title='epamtestmail93@mail.ru']");
