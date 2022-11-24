@@ -100,8 +100,8 @@ namespace ExampleService.Tests
             public void Dispose()
             {
                 // close down the browser
-                //driver.Quit();
-                //driver.Dispose();
+                driver.Quit();
+                driver.Dispose();
             }
         }
     }
