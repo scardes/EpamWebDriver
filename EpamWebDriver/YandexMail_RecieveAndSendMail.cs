@@ -84,15 +84,13 @@ namespace ExampleService.Tests
                 YandexMain.ResponceLetterWithName("EpamTestLogin");
             }
 
-
-
             // Runs once after all tests finished
             [OneTimeTearDown]
             public void Dispose()
             {
                 // Close down the browser
-                //driver.Quit();
-                //driver.Dispose();
+                driver.Quit();
+                driver.Dispose();
             }
         }
     }

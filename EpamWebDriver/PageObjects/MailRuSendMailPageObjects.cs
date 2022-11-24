@@ -18,11 +18,15 @@ namespace EpamWebDriver.PageObjects
         private readonly By LetterContendField = By.XPath("//div[@role='textbox']/div");
         private readonly By SendButton = By.CssSelector("[data-test-id=send]");
 
+        private readonly By ReadLetterField = By.XPath("//span[@class='ll-sp__normal']");
+        private readonly By ContentOfRecivingMailRu = By.XPath("//*[@id='style_16692022190831093165_BODY']/div/div[1]");
+        private readonly By EnterInUserSettingButton = By.XPath("//div[@aria-label='epamtestmail93@mail.ru']");
+        private readonly By EnterInPersonalDataButton = By.XPath("//div[text()='Личные данные']");
+
         public MailRuSendMailPageObjects (IWebDriver driver)
         {
             this.driver = driver;
         }
-
 
         // SendEmail_WithSomeInformation_SendSuccess
         public void SendEmailFromMailRU(string email, string theme, string content)
@@ -38,6 +42,21 @@ namespace EpamWebDriver.PageObjects
             driver.FindElement(LetterContendField).SendKeys(content);
             //And send letter
             driver.FindElement(SendButton).Click();
+        }
+
+        public string ReadLetterAndTakeNickName()
+        {
+            //Enter in Letter
+            driver.FindElement(ReadLetterField, 20).Click();
+
+            string reciveContent = driver.FindElement(ContentOfRecivingMailRu).Text;
+            return reciveContent;
+        }
+
+        public void EnterInSetting()
+        {
+            driver.FindElement(EnterInUserSettingButton, 20).Click();
+            driver.FindElement(EnterInPersonalDataButton).Click();
         }
     }
 }

@@ -53,6 +53,7 @@ namespace EpamWebDriver.PageObjects
         public void AutorizationInMailRU(string username, string password) 
         {
             GotoMailRU();
+            driver.Manage().Window.Maximize();
             //Fill Username(Login) information
             driver.FindElement(NextButton).Click();
             driver.FindElement(UsernameField).SendKeys(username);
