@@ -50,9 +50,9 @@ namespace ExampleService.Tests
             }
 
             [Test, Order(2)]
-            public void EnterInPersonalData_ChangeNickName_ChangeSuccess()
+            public void EnterInPersonalData_ChangeNickName_SaveSuccess()
             {
-                string NickNaneFromLetter = "EpamTestLogin";
+                string NickNameFromLetter = "EpamTestLogin";
 
                 // Make full autorization on mail.ru
                 var autorizationMailru = new MailRuAutorizationPageObjects(driver);
@@ -63,28 +63,43 @@ namespace ExampleService.Tests
                 EnterSettings.EnterInSetting();
 
                 MailRuSetPersonalDataPageObjects ChangeNickname = new MailRuSetPersonalDataPageObjects(driver);
-                ChangeNickname.WriteNewNickName(NickNaneFromLetter);
+                ChangeNickname.WriteNewNickName(NickNameFromLetter);
                 ChangeNickname.SavePersonData();
-
-                ////Start UnitTest for Assert of Mail content 
-                ////Arrange
-                //string expectedStr = "EpamTestLogin";
-
-                ////Act
-                //string readedStr = ReadMail.ReadLetterAndTakeNickName();
-
-                ////Assert
-                //Assert.AreEqual(expectedStr, readedStr);
             }
 
+            [Test, Order(3)]
+            public void ChangePersonalData_ChangeNickName_ChangeSuccess()
+            {
+                string NickNameFromLetter = "EpamTestLogin";
+
+                // Make full autorization on mail.ru
+                var autorizationMailru = new MailRuAutorizationPageObjects(driver);
+                autorizationMailru.AutorizationInMailRU("epamtestmail93@mail.ru", "EpamTest185");
+
+                //Read the letter and take new nick name
+                MailRuSendMailPageObjects EnterSettings = new MailRuSendMailPageObjects(driver);
+                EnterSettings.EnterInSetting();
+
+                MailRuSetPersonalDataPageObjects ChangeNickname = new MailRuSetPersonalDataPageObjects(driver);
+                
+                //Start UnitTest for Assert New Nick Name
+                //Arrange
+                string expectedStr = "EpamTestLogin";
+
+                //Act
+                string readedStr = ChangeNickname.WriteNewNickName(NickNameFromLetter);
+
+                //Assert
+                Assert.AreEqual(expectedStr, readedStr);
+            }
 
             // runs once after all tests finished
             [OneTimeTearDown]
             public void Dispose()
             {
                 // close down the browser
-                //driver.Quit();
-                //driver.Dispose();
+                driver.Quit();
+                driver.Dispose();
             }
         }
     }
