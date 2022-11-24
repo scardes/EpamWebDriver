@@ -56,7 +56,7 @@ namespace EpamWebDriver.PageObjects
         public void EnterInSetting()
         {
             driver.FindElement(EnterInUserSettingButton, 20).Click();
-            driver.FindElement(EnterInPersonalDataButton).Click();
+            driver.FindElement(EnterInPersonalDataButton, 20).Click();
         }
     }
 }

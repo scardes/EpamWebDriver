@@ -52,6 +52,8 @@ namespace ExampleService.Tests
             [Test, Order(2)]
             public void EnterInPersonalData_ChangeNickName_ChangeSuccess()
             {
+                string NickNaneFromLetter = "EpamTestLogin";
+
                 // Make full autorization on mail.ru
                 var autorizationMailru = new MailRuAutorizationPageObjects(driver);
                 autorizationMailru.AutorizationInMailRU("epamtestmail93@mail.ru", "EpamTest185");
@@ -60,7 +62,9 @@ namespace ExampleService.Tests
                 MailRuSendMailPageObjects EnterSettings = new MailRuSendMailPageObjects(driver);
                 EnterSettings.EnterInSetting();
 
-
+                MailRuSetPersonalDataPageObjects ChangeNickname = new MailRuSetPersonalDataPageObjects(driver);
+                ChangeNickname.WriteNewNickName(NickNaneFromLetter);
+                ChangeNickname.SavePersonData();
 
                 ////Start UnitTest for Assert of Mail content 
                 ////Arrange
@@ -79,8 +83,8 @@ namespace ExampleService.Tests
             public void Dispose()
             {
                 // close down the browser
-                driver.Quit();
-                driver.Dispose();
+                //driver.Quit();
+                //driver.Dispose();
             }
         }
     }
