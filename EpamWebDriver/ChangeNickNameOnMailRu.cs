@@ -27,15 +27,15 @@ namespace ExampleService.Tests
 
                 //Creates the ChomeDriver object, Executes tests on Google Chrome
                 driver = new ChromeDriver(path + @"\drivers\");
-            }
 
-            [Test, Order(1)]
-            public void ReadEmail_TekeNewNickInformation_ReadSuccess()
-            {
                 // Make full autorization on mail.ru
                 var autorizationMailru = new MailRuAutorizationPageObjects(driver);
                 autorizationMailru.AutorizationInMailRU("epamtestmail93@mail.ru", "EpamTest185");
+            }
 
+            [Test, Order(1)]
+            public void ReadEmail_TakeNewNickInformation_ReadSuccess()
+            {
                 //Read the letter and take new nick name
                 MailRuSendMailPageObjects ReadMail = new MailRuSendMailPageObjects(driver);
 
@@ -54,10 +54,7 @@ namespace ExampleService.Tests
             public void EnterInPersonalData_ChangeNickName_SaveSuccess()
             {
                 string NickNameFromLetter = "EpamTestLogin";
-
-                // Make full autorization on mail.ru
-                var autorizationMailru = new MailRuAutorizationPageObjects(driver);
-                autorizationMailru.AutorizationInMailRU("epamtestmail93@mail.ru", "EpamTest185");
+                
                 WebDriverExtensions.WaitSomeInterval(3);
 
                 //Read the letter and take new nick name
@@ -74,8 +71,6 @@ namespace ExampleService.Tests
             public void ChangePersonalData_ChangeNickName_ChangeSuccess()
             {
                 // Make full autorization on mail.ru
-                var autorizationMailru = new MailRuAutorizationPageObjects(driver);
-                autorizationMailru.AutorizationInMailRU("epamtestmail93@mail.ru", "EpamTest185");
                 WebDriverExtensions.WaitSomeInterval(3);
                 
                 //Read the letter and take new nick name

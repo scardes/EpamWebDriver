@@ -26,6 +26,10 @@ namespace ExampleService.Tests
 
                 //Creates the ChomeDriver object, Executes tests on Google Chrome
                 driver = new ChromeDriver(path + @"\drivers\");
+
+                //Autorization on Yandex mail
+                YandexAutorizationPageObjects EnterInYandex = new YandexAutorizationPageObjects(driver);
+                EnterInYandex.AutorizationInYandexMail("testepammail@yandex.ru", "EpamTest185");
             }
 
             [Test, Order(1)]
@@ -39,10 +43,6 @@ namespace ExampleService.Tests
             [Test, Order(2)]
             public void MailStatusCheck_OnYandexMail_NotReadSuccess()
             {
-                //Autorization on Yandex mail
-                YandexAutorizationPageObjects EnterInYandex = new YandexAutorizationPageObjects(driver);
-                EnterInYandex.AutorizationInYandexMail("testepammail@yandex.ru", "EpamTest185");
-
                 //Chech the letter is not read yet and have correct sender
                 YandexMailMainPageObjects YandexMain = new YandexMailMainPageObjects(driver);
                 YandexMain.CheckNewRecieveMail();
@@ -51,10 +51,6 @@ namespace ExampleService.Tests
             [Test, Order(3)]
             public void ReadNewMail_AssertContent_CheckSuccess()
             {
-                //Autorization on Yandex mail
-                YandexAutorizationPageObjects EnterInYandex = new YandexAutorizationPageObjects(driver);
-                EnterInYandex.AutorizationInYandexMail("testepammail@yandex.ru", "EpamTest185");
-
                 //Read the letter and check mail content
                 YandexMailMainPageObjects YandexMain = new YandexMailMainPageObjects(driver);
                 YandexMain.ReadNewMail();
@@ -73,10 +69,6 @@ namespace ExampleService.Tests
             [Test, Order(4)]
             public void ResponseToMail_WithNewLogin_SendSuccess()
             {
-                //Autorization on Yandex mail
-                YandexAutorizationPageObjects EnterInYandex = new YandexAutorizationPageObjects(driver);
-                EnterInYandex.AutorizationInYandexMail("testepammail@yandex.ru", "EpamTest185");
-
                 //Read the letter and check mail content
                 YandexMailMainPageObjects YandexMain = new YandexMailMainPageObjects(driver);
                 YandexMain.ReadNewMail();
