@@ -15,7 +15,7 @@ namespace EpamWebDriver.PageObjects
         private readonly By ContentOfRecivingMail = By.XPath("//div[text()='Content of test letter']");
         private readonly By SendResponseLetterButton = By.XPath("//div[@role='button' and contains(@title,'Ответить')]");
         private readonly By ContentOfResponseLetterField = By.XPath("//div[@role='textbox']");
-        private readonly By ResponseLetterSendButton = By.XPath("//button[@type='button' and contains(@class,'Button2 Button2_pin_circle-circle Button2_view_default Button2_size_l')]");
+        private readonly By ResponseLetterSendButton = By.XPath("//span[text()='Отправить']");
 
         public YandexMailMainPageObjects(IWebDriver driver)
         {

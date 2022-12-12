@@ -16,7 +16,7 @@ namespace EpamWebDriver.PageObjects
         private readonly By NextButton = By.XPath("//button[@data-test-id ='next-button']");
         private readonly By SubmitButton = By.XPath("//button [@data-test-id='submit-button']");
         private readonly By PopUpEmptyError = By.XPath("//small[text()='Поле «Имя аккаунта» должно быть заполнено']");
-        private readonly By PopUpInputError = By.XPath("//div[text()='Поле «Пароль» должно быть заполнено']");
+        private readonly By PopUpInputError = By.XPath("//div[text()='Неверный пароль, попробуйте ещё раз']");
 
         //TODO Delete this 
         //private readonly By UsernameField = By.Name("username");

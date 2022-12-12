@@ -12,11 +12,11 @@ namespace EpamWebDriver.PageObjects
         private IWebDriver driver;
 
         //Page objects For send email from mail.ru [Test, Order(5)]
-        private readonly By WriteLetterButton = By.XPath("//span[@class='compose-button__txt']");
-        private readonly By LetterReciverField = By.XPath("//input[@class='container--H9L5q size_s--3_M-_']");
+        private readonly By WriteLetterButton = By.XPath("//a[@title='Написать письмо']");
+        private readonly By LetterReciverField = By.XPath("//input[@type='text' and @tabindex='100']");
         private readonly By LetterThemeField = By.XPath("//input[@name='Subject']");
-        private readonly By LetterContendField = By.XPath("//div[@role='textbox']/div");
-        private readonly By SendButton = By.CssSelector("[data-test-id=send]");
+        private readonly By LetterContendField = By.XPath("//div[@role='textbox']/div[1]");
+        private readonly By SendButton = By.XPath("//button[@data-test-id='send']");
 
         private readonly By ReadLetterField = By.XPath("//span[@class='ll-sp__normal']");
         private readonly By ContentOfRecivingMailRu = By.XPath("//*[@id='style_16692022190831093165_BODY']/div/div[1]");
@@ -42,6 +42,7 @@ namespace EpamWebDriver.PageObjects
             driver.FindElement(LetterContendField).SendKeys(content);
             //And send letter
             driver.FindElement(SendButton).Click();
+            WebDriverExtensions.WaitSomeInterval(5); 
         }
 
         public string ReadLetterAndTakeNickName()
