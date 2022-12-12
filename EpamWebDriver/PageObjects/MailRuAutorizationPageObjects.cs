@@ -11,14 +11,21 @@ namespace EpamWebDriver.PageObjects
         string MailRuUrl = "https://account.mail.ru/";
 
         //Page objects For MailRUAutorization 
-        private readonly By UsernameField = By.Name("username");
-        private readonly By PasswordField = By.Name("password");
-        private readonly By NextButton = By.CssSelector("[data-test-id=next-button]");
-        //private readonly By NextButton = By.Xpath("//button[@data-test-id ='next-button']");
-        //private readonly By NextButton = By.Xpath("//span[text()='Ввести пароль']");
-        private readonly By SubmitButton = By.CssSelector("[data-test-id=submit-button]");
-        private readonly By PopUpEmptyError = By.CssSelector("[data-test-id=required]");
-        private readonly By PopUpInputError = By.CssSelector("[data-test-id=password-input-error]");
+        private readonly By UsernameField = By.XPath("//input[@name = 'username']");
+        private readonly By PasswordField = By.XPath("//input[@name = 'password']");
+        private readonly By NextButton = By.XPath("//button[@data-test-id ='next-button']");
+        private readonly By SubmitButton = By.XPath("//button [@data-test-id='submit-button']");
+        private readonly By PopUpEmptyError = By.XPath("//small[text()='Поле «Имя аккаунта» должно быть заполнено']");
+        private readonly By PopUpInputError = By.XPath("//div[text()='Поле «Пароль» должно быть заполнено']");
+
+        //TODO Delete this 
+        //private readonly By UsernameField = By.Name("username");
+        //private readonly By PasswordField = By.Name("password");
+        //private readonly By NextButton = By.CssSelector("[data-test-id=next-button]");
+        //private readonly By NextButton = By.XPath("//span[text()='Ввести пароль']");
+        //private readonly By SubmitButton = By.CssSelector("[data-test-id=submit-button]");
+        //private readonly By PopUpEmptyError = By.CssSelector("[data-test-id=required]");
+        //private readonly By PopUpInputError = By.CssSelector("[data-test-id=password-input-error]");
 
         public MailRuAutorizationPageObjects(IWebDriver driver)
         {
