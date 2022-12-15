@@ -18,20 +18,10 @@ namespace EpamWebDriver.PageObjects
         private readonly By PopUpEmptyError = By.XPath("//small[text()='Поле «Имя аккаунта» должно быть заполнено']");
         private readonly By PopUpInputError = By.XPath("//div[text()='Неверный пароль, попробуйте ещё раз']");
 
-        //TODO Delete this 
-        //private readonly By UsernameField = By.Name("username");
-        //private readonly By PasswordField = By.Name("password");
-        //private readonly By NextButton = By.CssSelector("[data-test-id=next-button]");
-        //private readonly By NextButton = By.XPath("//span[text()='Ввести пароль']");
-        //private readonly By SubmitButton = By.CssSelector("[data-test-id=submit-button]");
-        //private readonly By PopUpEmptyError = By.CssSelector("[data-test-id=required]");
-        //private readonly By PopUpInputError = By.CssSelector("[data-test-id=password-input-error]");
-
         public MailRuAutorizationPageObjects(IWebDriver driver)
         {
             this.driver = driver;
         }
-
 
         //Open mail.ru page
         private void GotoMailRU()
